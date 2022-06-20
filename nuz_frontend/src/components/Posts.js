@@ -1,0 +1,19 @@
+
+
+const Posts = ({ posts, user }) => {
+    
+    return (
+        <ul>
+            {
+                posts.map(post => 
+                    <li key={post.id}>
+                        {post.content} by {post.user.username}
+                        { user.username === post.user.username ? <button onClick={handleDelete}>Delete</button> : <></>}
+                    </li>)
+            }
+            
+        </ul>
+    )
+}
+
+export default Posts
