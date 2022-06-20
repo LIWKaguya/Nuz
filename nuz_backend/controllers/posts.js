@@ -43,3 +43,5 @@ postsRouter.post('/', async (req, res) => {
 })
 
 module.exports = postsRouter
+
+// some  bug were here
