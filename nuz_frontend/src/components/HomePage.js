@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import postsService from '../services/posts'
+import UploadSection from "./UploadSection"
 
 const HomePage = ({ user, setUser}) => {
     const [posts, setPosts] = useState([])
@@ -21,7 +22,10 @@ const HomePage = ({ user, setUser}) => {
             <div>
                 <h1>Welcome to Nuz, {user.username}</h1>
             </div>
+            <div>
             <button onClick={handleLogout}>Logout</button>
+            </div>
+            <UploadSection setPosts={setPosts} posts={posts}/>
             <ul>
                 {posts.map(post => <li key={post.id}>{post.content} by {post.user.username}</li>)}
             </ul>
