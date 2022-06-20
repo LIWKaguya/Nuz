@@ -4,7 +4,9 @@ const Post = require('../models/post')
 const middleware = require('../utils/middleware')
 
 postsRouter.get('/', async (_, res) => {
-    const posts = await Post.find({}).populate('user', { username: 1, name: 1})
+    const posts = await Post.find({})
+    .populate('user', { username: 1, name: 1})
+    .populate('likedUsers', {username: 1, name: 1})
 
     res.status(200).json(posts)
 })
@@ -40,7 +42,9 @@ postsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
 postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
     const { user } = req
     const post = await Post.findById(req.params.id)
-    if(post.likedUsers.includes(user._id)) post.likedUsers.filter(id => id ===  user._id)
+    if(post.likedUsers.includes(user._id)) {
+        post.likedUsers = post.likedUsers.filter(id => id ===  user._id)
+    }
     else {
         post.likedUsers = post.likedUsers.concat(user._id)
     }
@@ -48,10 +52,8 @@ postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
         ...post,
         likes: post.likedUsers.length
     }
-    const newLikedPost = await Post.findByIdAndUpdate(req.params.id, likedPost)
+    const newLikedPost = await Post.findByIdAndUpdate(req.params.id, likedPost, {new: true})
     res.status(200).json(newLikedPost)
 })
 
 module.exports = postsRouter
-
-// some  bug were here

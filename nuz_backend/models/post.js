@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 
 const postSchema = new mongoose.Schema({
     content: String,
-    likes: {
-        type: Number,
-        default: 0
-    },
     likedUsers: [
         {
             type: mongoose.Schema.Types.ObjectId,
