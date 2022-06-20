@@ -1,7 +1,13 @@
+
+
+import HomePage from "./components/HomePage";
+
 const App = () => {
+  
   return (
-    <h1>Welcome to Nuz</h1>
-  );
+    <HomePage />  
+  )
+
 }
 
 export default App;
