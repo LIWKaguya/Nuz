@@ -1,16 +1,7 @@
 const postsRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 
 const Post = require('../models/post')
-const User = require('../models/user')
-
-const getTokenFrom = ( req ) => {
-    const authorization = req.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('using ')) {
-        return authorization.substring(6)
-    }
-    return null
-}
+const middleware = require('../utils/middleware')
 
 postsRouter.get('/', async (_, res) => {
     const posts = await Post.find({}).populate('user', { username: 1, name: 1})
@@ -18,18 +9,10 @@ postsRouter.get('/', async (_, res) => {
     res.status(200).json(posts)
 })
 
-postsRouter.post('/', async (req, res) => {
+postsRouter.post('/', middleware.userExtractor, async (req, res) => {
     const { content } = req.body
-
-    const token = getTokenFrom(req)
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-
-    if(!token || !decodedToken.id) {
-        return res.status(401).json({ error: 'token missing or invalid '})
-    }
-
-    const user = await User.findById(decodedToken.id)
-
+    const { user } = req
+   
     const post = new Post({
         content,
         user: user._id
@@ -40,6 +23,33 @@ postsRouter.post('/', async (req, res) => {
     await user.save()
 
     res.status(201).json(savedPost)
+})
+
+postsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
+    const { user } = req
+    const post = await Post.findById(req.params.id)
+    if(post.user.toString() == user.id) {
+        await post.remove()
+        return res.status(204).end()
+    }
+    return res.status(403).json({
+        error: 'user is not allowed'
+    })
+})
+
+postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
+    const { user } = req
+    const post = await Post.findById(req.params.id)
+    if(post.likedUsers.includes(user._id)) post.likedUsers.filter(id => id ===  user._id)
+    else {
+        post.likedUsers = post.likedUsers.concat(user._id)
+    }
+    const likedPost = {
+        ...post,
+        likes: post.likedUsers.length
+    }
+    const newLikedPost = await Post.findByIdAndUpdate(req.params.id, likedPost)
+    res.status(200).json(newLikedPost)
 })
 
 module.exports = postsRouter
