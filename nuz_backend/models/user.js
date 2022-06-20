@@ -12,4 +12,13 @@ const userSchema = new mongoose.Schema({
     ]
 })
 
+userSchema.set('toJSON', {
+    transform: (_, returnedObj) => {
+        returnedObj.id = returnedObj._id.toString()
+        delete returnedObj._id
+        delete returnedObj.__v
+        delete returnedObj.passwordHash
+    }
+})
+
 module.exports = mongoose.model('User', userSchema)
