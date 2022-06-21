@@ -35,7 +35,7 @@ const likePost = async ({ id }) => {
         headers: { Authorization: token }
     }
 
-    const response = await axios.put(`${baseUrl}/${id}/likes`, config)
+    const response = await axios.put(`${baseUrl}/${id}/likes`, null, config)
     return response.data
 }
 
