@@ -1,6 +1,10 @@
 
 
 const Posts = ({ posts, user }) => {
+
+    const handleDelete = () => {
+        
+    }
     
     return (
         <ul>

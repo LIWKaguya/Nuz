@@ -26,9 +26,7 @@ const HomePage = ({ user, setUser}) => {
             <button onClick={handleLogout}>Logout</button>
             </div>
             <UploadSection setPosts={setPosts} posts={posts}/>
-            <ul>
-                {posts.map(post => <li key={post.id}>{post.content} by {post.user.username}</li>)}
-            </ul>
+            
         </>
     )
 }
