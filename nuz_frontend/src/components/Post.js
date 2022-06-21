@@ -24,7 +24,7 @@ const Post = ({ post, user, posts, setPosts }) => {
         const likedPost = await postsService.likePost({
             id: post.id
         })
-        setPosts(posts.map(p => p.id === likedPost ? likedPost : p))
+        setPosts(posts.map(p => p.id === likedPost.id ? likedPost : p))
     }
     
     return (
