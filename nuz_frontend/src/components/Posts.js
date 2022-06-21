@@ -1,21 +1,11 @@
+import Post from "./Post"
 
 
-const Posts = ({ posts, user }) => {
-
-    const handleDelete = () => {
-        
-    }
+const Posts = ({ posts, user, setPosts }) => {
     
     return (
         <ul>
-            {
-                posts.map(post => 
-                    <li key={post.id}>
-                        {post.content} by {post.user.username}
-                        { user.username === post.user.username ? <button onClick={handleDelete}>Delete</button> : <></>}
-                    </li>)
-            }
-            
+            { posts.map(post => <Post post={post} key={post.id} user={user} posts={posts} setPosts={setPosts}/>) }
         </ul>
     )
 }
