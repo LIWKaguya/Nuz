@@ -17,7 +17,7 @@ postsRouter.post('/', middleware.userExtractor, async (req, res) => {
    
     const post = new Post({
         content,
-        user: user._id
+        user
     })
 
     const savedPost = await post.save()
@@ -48,12 +48,10 @@ postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
     else {
         post.likedUsers = post.likedUsers.concat(user._id)
     }
-    const likedPost = {
-        ...post,
-        likes: post.likedUsers.length
-    }
-    const newLikedPost = await Post.findByIdAndUpdate(req.params.id, likedPost, {new: true})
-    res.status(200).json(newLikedPost)
+    const likedPost = await Post.findByIdAndUpdate(req.params.id, post, {new: true}).populate('user', {username: 1, name: 1})
+    res.status(200).json(likedPost)
 })
 
 module.exports = postsRouter
+
+// fix the like a little bit 
