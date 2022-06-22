@@ -10,6 +10,8 @@ const Post = ({ post, user, posts, setPosts }) => {
         marginBottom: 5
     }
 
+    console.log(user)
+
     const handleDelete = async () => {
         if(window.confirm('Do you want to delete this post ?'))
         {
@@ -33,7 +35,10 @@ const Post = ({ post, user, posts, setPosts }) => {
                 {post.content} by {post.user.username}
             </div>
             <div>
-                Likes: {post.likedUsers.length} <button onClick={handleLike}>Like</button>
+                Likes: {post.likedUsers.length}
+                <button onClick={handleLike}>
+                    {user.likedPosts.includes(post.id) ? 'Unlike' : 'Like'}
+                </button>
             </div>
             {user.username === post.user.username ? <button onClick={handleDelete}>Delete</button> : <></>}
         </div>
