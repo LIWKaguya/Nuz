@@ -4,6 +4,12 @@ const userSchema = new mongoose.Schema({
     username: String,
     name: String,
     passwordHash: String,
+    likedPosts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
     posts: [
         {
             type: mongoose.Schema.Types.ObjectId,

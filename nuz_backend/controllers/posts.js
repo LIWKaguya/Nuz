@@ -44,14 +44,17 @@ postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
     const post = await Post.findById(req.params.id)
     if(post.likedUsers.includes(user._id)) {
         post.likedUsers = post.likedUsers.filter(id => id ===  user._id)
+        user.likedPosts = user.likedPosts.filter(id => id ===  post._id)
     }
     else {
         post.likedUsers = post.likedUsers.concat(user._id)
+        user.likedPosts = user.likedPosts.concat(post._id)
     }
+    await user.save()
     const likedPost = await Post.findByIdAndUpdate(req.params.id, post, {new: true}).populate('user', {username: 1, name: 1})
     res.status(200).json(likedPost)
 })
 
 module.exports = postsRouter
 
-// fix the like a little bit 
+// do this again
