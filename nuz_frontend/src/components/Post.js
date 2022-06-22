@@ -10,8 +10,6 @@ const Post = ({ post, user, posts, setPosts }) => {
         marginBottom: 5
     }
 
-    console.log(user)
-
     const handleDelete = async () => {
         if(window.confirm('Do you want to delete this post ?'))
         {
