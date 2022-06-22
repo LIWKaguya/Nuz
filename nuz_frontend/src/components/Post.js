@@ -1,6 +1,8 @@
 import postsService from '../services/posts'
 
 const Post = ({ post, user, posts, setPosts }) => {
+
+    const [text, setText] = useState('')
     
     const postStyle = {
         paddingTop: 10,
@@ -25,6 +27,10 @@ const Post = ({ post, user, posts, setPosts }) => {
             id: post.id
         })
         setPosts(posts.map(p => p.id === likedPost.id ? likedPost : p))
+    }
+
+    if(user) {
+        
     }
     
     return (

@@ -18,12 +18,10 @@ const HomePage = ({ user, setUser}) => {
         usersService.getOne({
             id: user.id
         }).then(thisUser => {
-            console.log(thisUser)
             setUser(thisUser)
         })
     }, [setUser, user.id])
 
-    console.log(user)
 
     const handleLogout = () => {
         setUser(null)
