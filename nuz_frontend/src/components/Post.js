@@ -1,9 +1,17 @@
+import { useEffect, useState } from 'react'
+
 import postsService from '../services/posts'
 
 const Post = ({ post, user, posts, setPosts }) => {
 
-    const [text, setText] = useState('')
-    
+    let check = user.likedPosts.includes(post.id)
+
+    const [ text, setText ] = useState(null)
+
+    useEffect(() => {
+         setText(check ? 'Unlike' : 'Like')
+    }, [check])
+
     const postStyle = {
         paddingTop: 10,
         paddingLeft: 2,
@@ -27,10 +35,7 @@ const Post = ({ post, user, posts, setPosts }) => {
             id: post.id
         })
         setPosts(posts.map(p => p.id === likedPost.id ? likedPost : p))
-    }
-
-    if(user) {
-        
+        setText(text === 'Like' ? 'Unlike' : 'Like')
     }
     
     return (
@@ -41,7 +46,7 @@ const Post = ({ post, user, posts, setPosts }) => {
             <div>
                 Likes: {post.likedUsers.length}
                 <button onClick={handleLike}>
-                    {user.likedPosts.includes(post.id) ? 'Unlike' : 'Like'}
+                    { text }
                 </button>
             </div>
             {user.username === post.user.username ? <button onClick={handleDelete}>Delete</button> : <></>}

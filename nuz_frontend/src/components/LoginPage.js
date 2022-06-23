@@ -9,13 +9,14 @@ const LoginPage = ({ setUser }) => {
 
     const handleLogin = async (event) => {
         event.preventDefault()
-        const user = await loginService.authenticate({
+        const credentials = await loginService.authenticate({
             username, password
         })
-        setUser(user)
-        postsService.setToken(user.token)
+        setUser(credentials.user)
+        console.log(credentials)
+        postsService.setToken(credentials.token)
         window.localStorage.setItem(
-            'loggedNuzUser', JSON.stringify(user)
+            'loggedNuzUser', JSON.stringify(credentials.user)
         )
         setUsername('')
         setPassword('')
