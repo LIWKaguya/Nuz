@@ -13,10 +13,9 @@ const LoginPage = ({ setUser }) => {
             username, password
         })
         setUser(credentials.user)
-        console.log(credentials)
         postsService.setToken(credentials.token)
         window.localStorage.setItem(
-            'loggedNuzUser', JSON.stringify(credentials.user)
+            'loggedNuzUser', JSON.stringify(credentials)
         )
         setUsername('')
         setPassword('')

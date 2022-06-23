@@ -8,11 +8,11 @@ const App = () => {
   const [ user, setUser ] = useState(null)
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNuzUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      postsService.setToken(user.token)
+    const loggedCredentialsJSON = window.localStorage.getItem('loggedNuzUser')
+    if (loggedCredentialsJSON) {
+      const credentials = JSON.parse(loggedCredentialsJSON)
+      setUser(credentials.user)
+      postsService.setToken(credentials.token)
     }
   }, [])
 
