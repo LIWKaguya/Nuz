@@ -6,7 +6,6 @@ const middleware = require('../utils/middleware')
 postsRouter.get('/', async (_, res) => {
     const posts = await Post.find({})
     .populate('user', { username: 1, name: 1})
-    .populate('likedUsers', {username: 1, name: 1})
 
     res.status(200).json(posts)
 })
@@ -42,11 +41,13 @@ postsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
 postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
     const { user } = req
     const post = await Post.findById(req.params.id)
-    if(post.likedUsers.includes(user._id)) {
-        post.likedUsers = post.likedUsers.filter(id => id ===  user._id)
-        user.likedPosts = user.likedPosts.filter(id => id ===  post._id)
+    if(post.likedUsers.includes(user._id) && user.likedPosts.includes(post._id))
+    {
+        post.likedUsers = post.likedUsers.filter(u => u._id.toString() !==  user._id.toString())
+        user.likedPosts = user.likedPosts.filter(p => p._id.toString() !==  post._id.toString())
     }
-    else {
+    else 
+    {
         post.likedUsers = post.likedUsers.concat(user._id)
         user.likedPosts = user.likedPosts.concat(post._id)
     }
@@ -56,5 +57,3 @@ postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
 })
 
 module.exports = postsRouter
-
-// do this again

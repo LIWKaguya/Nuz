@@ -10,6 +10,14 @@ usersRouter.get('/', async (_, res) => {
     res.status(200).json(users)
 })
 
+usersRouter.get('/:id', async (req, res) => {
+    const user = await User.findById(req.params.id).populate('posts', {
+        content: 1, comments: 1, likes: 1
+    })
+
+    res.status(200).json(user)
+})
+
 usersRouter.post('/', async (req, res) => {
     const { username, name, password } = req.body
     const existingUser = await User.findOne({ username })
