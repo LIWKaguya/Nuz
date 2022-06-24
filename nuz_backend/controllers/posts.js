@@ -41,6 +41,7 @@ postsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
 postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
     const { user } = req
     const post = await Post.findById(req.params.id)
+    console.log(post)
     if(post.likedUsers.includes(user._id) && user.likedPosts.includes(post._id))
     {
         post.likedUsers = post.likedUsers.filter(u => u._id.toString() !==  user._id.toString())
@@ -51,9 +52,9 @@ postsRouter.put('/:id/likes', middleware.userExtractor, async (req, res) => {
         post.likedUsers = post.likedUsers.concat(user._id)
         user.likedPosts = user.likedPosts.concat(post._id)
     }
-    await user.save()
+    const likedUser = await user.save()
     const likedPost = await Post.findByIdAndUpdate(req.params.id, post, {new: true}).populate('user', {username: 1, name: 1})
-    res.status(200).json(likedPost)
+    res.status(200).json({ likedPost, likedUser })
 })
 
 module.exports = postsRouter
