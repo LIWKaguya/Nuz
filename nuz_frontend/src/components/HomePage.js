@@ -27,7 +27,7 @@ const HomePage = ({ user, setUser}) => {
                 <button onClick={handleLogout}>Logout</button>
             </div>
             <UploadSection setPosts={setPosts} posts={posts}/>
-            <Posts posts={posts} user={user} setPosts={setPosts}/>
+            <Posts posts={posts} user={user} setPosts={setPosts} setUser={setUser}/>
         </>
     )
 }
