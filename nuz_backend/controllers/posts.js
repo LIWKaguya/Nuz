@@ -30,6 +30,9 @@ postsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
     const { user } = req
     const post = await Post.findById(req.params.id)
     if(post.user.toString() == user.id) {
+        user.likedPosts = user.likedPosts.filter(p => p._id.toString() !== post._id.toString())
+        console.log(user.likedPosts)
+        await user.save()
         await post.remove()
         return res.status(204).end()
     }
