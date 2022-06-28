@@ -25,3 +25,5 @@ const UploadSection = ({ setPosts, posts }) => {
 }
 
 export default UploadSection
+
+// thinking for a plan
