@@ -26,4 +26,4 @@ const UploadSection = ({ setPosts, posts }) => {
 
 export default UploadSection
 
-// thinking for a plan
+// The like function is still busted for some reason
